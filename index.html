@@ -3,105 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سيرفر الرفع العالمي المباشر</title>
-    
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    
+    <title>سيرفر الرفع المحلي السريع</title>
     <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: #f0f2f5; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            margin: 0; 
-        }
-        .upload-card { 
-            background: white; 
-            padding: 30px; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-            text-align: center; 
-            width: 90%; 
-            max-width: 400px; 
-        }
-        input[type="file"] { 
-            display: none; 
-        }
-        .custom-label { 
-            background: #007bff; 
-            color: white; 
-            padding: 12px 24px; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            display: inline-block; 
-            margin-bottom: 15px; 
-            font-weight: bold;
-            transition: background 0.2s;
-        }
-        .custom-label:hover {
-            background: #0056b3;
-        }
-        button { 
-            background: #28a745; 
-            color: white; 
-            border: none; 
-            padding: 12px 20px; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            width: 100%; 
-            font-size: 16px; 
-            font-weight: bold;
-            transition: background 0.2s;
-        }
-        button:hover {
-            background: #218838;
-        }
-        .result { 
-            margin-top: 20px; 
-            word-break: break-all; 
-            padding: 15px; 
-            background: #e9ecef; 
-            border-radius: 8px; 
-            display: none; 
-            border: 1px solid #ced4da;
-        }
-        #download-link { 
-            color: #007bff; 
-            font-weight: bold; 
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 10px;
-        }
-        #download-link:hover {
-            text-decoration: underline;
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .upload-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 400px; }
+        input[type="file"] { display: none; }
+        .custom-label { background: #007bff; color: white; padding: 12px 24px; border-radius: 8px; cursor: pointer; display: inline-block; margin-bottom: 15px; font-weight: bold; }
+        button { background: #28a745; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold; }
+        .result { margin-top: 20px; word-break: break-all; padding: 15px; background: #e9ecef; border-radius: 8px; display: none; border: 1px solid #ced4da; }
+        #download-link { color: #007bff; font-weight: bold; text-decoration: none; display: inline-block; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="upload-card">
-    <h2>سيرفر الرفع العالمي المباشر 🌐</h2>
-    <p>ارفع أي ملف من أي شبكة في العالم فوراً وبدون عوائق إلى سطح المكتب</p>
+    <h2>سيرفر الرفع المباشر الصاروخي ⚡</h2>
+    <p>ارفع أي ملف من هاتفك المتصل بنفس شبكة الـ Wi-Fi ليُحفظ فوراً على سطح المكتب</p>
     
     <label for="file-input" class="custom-label">إختر ملفاً للرفع</label>
     <input type="file" id="file-input" onchange="updateFileName()">
     
-    <div id="file-name" style="margin-bottom: 15px; color: #555; font-weight: 500;"></div>
+    <div id="file-name" style="margin-bottom: 15px; color: #555;"></div>
     
-    <button onclick="uploadFile()">ابدأ الرفع المباشر</button>
+    <button onclick="uploadFile()">ابدأ الرفع الفوري</button>
     
     <div id="result-box" class="result">
-        <p id="status-text" style="margin: 0; font-weight: bold; color: #333;"></p>
+        <p id="status-text" style="margin: 0; font-weight: bold;"></p>
         <a id="download-link" href="#" target="_blank"></a>
     </div>
 </div>
 
 <script>
-    const SERVER_URL = "https://elgoharyx-server.loca.lt"; 
+    // تم التعديل تلقائياً بناءً على الـ IP الخاص بجهازك 🚀
+    const SERVER_URL = "http://192.168.100.6:5000"; 
 
     function updateFileName() {
         const input = document.getElementById('file-input');
@@ -110,10 +44,7 @@
 
     async function uploadFile() {
         const input = document.getElementById('file-input');
-        if (!input.files[0]) { 
-            alert("من فضلك اختر ملفاً أولاً!"); 
-            return; 
-        }
+        if (!input.files[0]) { alert("من فضلك اختر ملفاً أولاً!"); return; }
         
         const formData = new FormData();
         formData.append('file', input.files[0]);
@@ -122,31 +53,27 @@
         const statusText = document.getElementById('status-text');
         const link = document.getElementById('download-link');
         
-        statusText.innerText = "جاري نقل وتأمين الملف إلى سطح المكتب... ⏳";
+        statusText.innerText = "جاري نقل الملف مباشرة عبر الشبكة المحلية... ⏳";
         link.style.display = "none";
         resultBox.style.display = "block";
         
         try {
             const response = await fetch(`${SERVER_URL}/upload`, {
                 method: 'POST',
-                body: formData,
-                headers: {
-                    // تخطي صفحة حماية لوكال تانل الترحيبية برمجياً أثناء الرفع خلف الكواليس
-                    "bypass-tunnel-reminder": "true"
-                }
+                body: formData
             });
             const result = await response.json();
             
             if (response.ok) {
                 statusText.innerText = "🎉 " + result.message;
                 link.href = result.url;
-                link.innerText = "رابط تحميل الملف المباشر: " + result.url;
+                link.innerText = "رابط فتح الملف المباشر";
                 link.style.display = "block";
             } else {
-                statusText.innerText = "❌ فشل الرفع: " + (result.error || "خطأ مجهول");
+                statusText.innerText = "❌ فشل الرفع: " + result.error;
             }
         } catch (error) {
-            statusText.innerText = "❌ تعذر الاتصال! تأكد من أن السيرفر والنفق قيد التشغيل في الـ CMD.";
+            statusText.innerText = "❌ تعذر الاتصال بالسيرفر! تأكد أن السيرفر يعمل وأن الهاتف متصل بنفس الـ Wi-Fi.";
             console.error("Error:", error);
         }
     }
