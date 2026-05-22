@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سيرفر رفع الملفات المحلي</title>
+    <title>موقع رفع الملفات السريع</title>
+    <!-- كود لمنع المتصفح من تخزين كاش قديم للواجهة -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
     <style>
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
@@ -79,7 +84,7 @@
 <body>
 
 <div class="upload-card">
-    <h2>سيرفر الرفع المحلي 📁</h2>
+    <h2>سيرفر الرفع السريع 📁</h2>
     <p>ارفع أي ملف من جهازك ليتم حفظه فوراً في مجلد سطح المكتب</p>
     
     <label for="file-input" class="custom-label">إختر ملفاً من جهازك</label>
@@ -96,7 +101,7 @@
 </div>
 
 <script>
-    // الاتصال مباشرة بالسيرفر المحلي المخزن في ذاكرة الجهاز
+    // الاتصال مباشرة بالسيرفر المحلي المستقر الذي يعمل في خلفية اللابتوب
     const SERVER_URL = "http://127.0.0.1:5000"; 
 
     function updateFileName() {
@@ -138,7 +143,7 @@
                 statusText.innerText = "❌ فشل الرفع: " + (result.error || "خطأ مجهول");
             }
         } catch (error) {
-            statusText.innerText = "❌ تعذر الاتصال بالسيرفر! تأكد من تشغيل ملف server.py في الـ CMD.";
+            statusText.innerText = "❌ تعذر الاتصال بالسيرفر! تأكد من أن اللابتوب يعمل والسيرفر مستقر في الخلفية.";
             console.error("Error:", error);
         }
     }
