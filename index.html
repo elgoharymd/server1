@@ -5,53 +5,124 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سيرفر رفع الملفات الشخصي</title>
     <style>
-        body { font-family: sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .upload-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 400px; }
-        input[type="file"] { display: none; }
-        .custom-label { background: #007bff; color: white; padding: 10px 20px; border-radius: 6px; cursor: pointer; display: inline-block; margin-bottom: 15px; }
-        button { background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; width: 100%; font-size: 16px; }
-        .result { margin-top: 20px; word-break: break-all; padding: 10px; background: #e9ecef; border-radius: 6px; display: none; }
-        a { color: #007bff; font-weight: bold; }
+        /* تنسيقات واجهة المستخدم - مريحة وعصرية ومتجاوبة مع الموبايل */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #f0f2f5; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+        }
+        .upload-card { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+            text-align: center; 
+            width: 90%; 
+            max-width: 400px; 
+        }
+        input[type="file"] { 
+            display: none; 
+        }
+        .custom-label { 
+            background: #007bff; 
+            color: white; 
+            padding: 12px 24px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            display: inline-block; 
+            margin-bottom: 15px; 
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .custom-label:hover {
+            background: #0056b3;
+        }
+        button { 
+            background: #28a745; 
+            color: white; 
+            border: none; 
+            padding: 12px 20px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            width: 100%; 
+            font-size: 16px; 
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .result { 
+            margin-top: 20px; 
+            word-break: break-all; 
+            padding: 15px; 
+            background: #e9ecef; 
+            border-radius: 8px; 
+            display: none; 
+            border: 1px solid #ced4da;
+        }
+        #download-link { 
+            color: #007bff; 
+            font-weight: bold; 
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        #download-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 
 <div class="upload-card">
-    <h2>سيرفر رفع الملفات السحابي ☁️</h2>
-    <p>اختر ملفاً لرفعه مباشرة إلى اللابتوب الخاص بك</p>
+    <h2>سيرفر الرفع السحابي الشخصي ☁️</h2>
+    <p>اختر أي ملف لرفعه مباشرة إلى الهارد ديسك الخاص بلابتوبك من أي مكان</p>
     
     <label for="file-input" class="custom-label">إختر الملف من جهازك</label>
     <input type="file" id="file-input" onchange="updateFileName()">
-    <div id="file-name" style="margin-bottom: 15px; color: #555;"></div>
     
-    <button onclick="uploadFile()">ابدأ الرفع للابتوب</button>
+    <div id="file-name" style="margin-bottom: 15px; color: #555; font-weight: 500;"></div>
+    
+    <button onclick="uploadFile()">ابدأ الرفع للابتوب الآن</button>
     
     <div id="result-box" class="result">
-        <p id="status-text"></p>
-        <a id="download-link" href="#" target="_blank">رابط مشاركة الملف الدائم</a>
+        <p id="status-text" style="margin: 0; font-weight: bold; color: #333;"></p>
+        <a id="download-link" href="#" target="_blank"></a>
     </div>
 </div>
 
 <script>
-    // ضع هنا نفس الرابط الدائم الخاص بأداة النفق (مثل Localtonet) المتصل بلابتوبك
-    const SERVER_URL = "http://127.0.0.1:5000"; 
+    // الرابط الحي الحالي المتصل بالسيرفر المحلي عبر نفق serveo
+    const SERVER_URL = "https://0642551e7b671695-41-44-155-137.serveousercontent.com"; 
 
+    // تحديث اسم الملف المختار على الشاشة فور اختياره
     function updateFileName() {
         const input = document.getElementById('file-input');
-        document.getElementById('file-name').innerText = input.files[0] ? input.files[0].name : "";
+        document.getElementById('file-name').innerText = input.files[0] ? "الملف المختار: " + input.files[0].name : "";
     }
 
+    // دالة إرسال الملف إلى سيرفر بايثون على اللابتوب
     async function uploadFile() {
         const input = document.getElementById('file-input');
-        if (!input.files[0]) { alert("من فضلك اختر ملفاً أولاً!"); return; }
+        if (!input.files[0]) { 
+            alert("من فضلك اختر ملفاً أولاً!"); 
+            return; 
+        }
         
         const formData = new FormData();
         formData.append('file', input.files[0]);
         
         const resultBox = document.getElementById('result-box');
         const statusText = document.getElementById('status-text');
+        const link = document.getElementById('download-link');
         
-        statusText.innerText = "جاري الرفع الآن...";
+        statusText.innerText = "جاري رفع ملفك إلى اللابتوب عبر الإنترنت... ⏳";
+        link.style.display = "none";
         resultBox.style.display = "block";
         
         try {
@@ -62,17 +133,16 @@
             const result = await response.json();
             
             if (response.ok) {
-                statusText.innerText = result.message;
-                const link = document.getElementById('download-link');
+                statusText.innerText = "🎉 " + result.message;
                 link.href = result.url;
-                link.innerText = result.url;
+                link.innerText = "رابط تحميل الملف الدائم: " + result.url;
                 link.style.display = "block";
             } else {
-                statusText.innerText = "فشل الرفع: " + result.error;
+                statusText.innerText = "❌ فشل الرفع: " + (result.error || "خطأ مجهول");
             }
         } catch (error) {
-            statusText.innerText = "خطأ في الاتصال بالسيرفر المحلي!";
-            console.error(error);
+            statusText.innerText = "❌ تعذر الاتصال باللابتوب! تأكد من تشغيل سيرفر بايثون ونفق SSH.";
+            console.error("Error connected to server:", error);
         }
     }
 </script>
