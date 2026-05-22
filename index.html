@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقع رفع الملفات السريع</title>
-    <!-- كود لمنع المتصفح من تخزين كاش قديم للواجهة -->
+    <title>سيرفر الرفع العالمي المباشر</title>
+    
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -84,15 +84,15 @@
 <body>
 
 <div class="upload-card">
-    <h2>سيرفر الرفع السريع 📁</h2>
-    <p>ارفع أي ملف من جهازك ليتم حفظه فوراً في مجلد سطح المكتب</p>
+    <h2>سيرفر الرفع العالمي المباشر 🌐</h2>
+    <p>ارفع أي ملف من أي شبكة في العالم فوراً وبدون عوائق إلى سطح المكتب</p>
     
-    <label for="file-input" class="custom-label">إختر ملفاً من جهازك</label>
+    <label for="file-input" class="custom-label">إختر ملفاً للرفع</label>
     <input type="file" id="file-input" onchange="updateFileName()">
     
     <div id="file-name" style="margin-bottom: 15px; color: #555; font-weight: 500;"></div>
     
-    <button onclick="uploadFile()">ابدأ الرفع السريع</button>
+    <button onclick="uploadFile()">ابدأ الرفع المباشر</button>
     
     <div id="result-box" class="result">
         <p id="status-text" style="margin: 0; font-weight: bold; color: #333;"></p>
@@ -101,8 +101,7 @@
 </div>
 
 <script>
-    // الاتصال مباشرة بالسيرفر المحلي المستقر الذي يعمل في خلفية اللابتوب
-    const SERVER_URL = "http://127.0.0.1:5000"; 
+    const SERVER_URL = "https://elgoharyx-server.loca.lt"; 
 
     function updateFileName() {
         const input = document.getElementById('file-input');
@@ -123,27 +122,31 @@
         const statusText = document.getElementById('status-text');
         const link = document.getElementById('download-link');
         
-        statusText.innerText = "جاري نقل الملف إلى سطح المكتب... ⏳";
+        statusText.innerText = "جاري نقل وتأمين الملف إلى سطح المكتب... ⏳";
         link.style.display = "none";
         resultBox.style.display = "block";
         
         try {
             const response = await fetch(`${SERVER_URL}/upload`, {
                 method: 'POST',
-                body: formData
+                body: formData,
+                headers: {
+                    // تخطي صفحة حماية لوكال تانل الترحيبية برمجياً أثناء الرفع خلف الكواليس
+                    "bypass-tunnel-reminder": "true"
+                }
             });
             const result = await response.json();
             
             if (response.ok) {
                 statusText.innerText = "🎉 " + result.message;
                 link.href = result.url;
-                link.innerText = "رابط فتح الملف محلياً: " + result.url;
+                link.innerText = "رابط تحميل الملف المباشر: " + result.url;
                 link.style.display = "block";
             } else {
                 statusText.innerText = "❌ فشل الرفع: " + (result.error || "خطأ مجهول");
             }
         } catch (error) {
-            statusText.innerText = "❌ تعذر الاتصال بالسيرفر! تأكد من أن اللابتوب يعمل والسيرفر مستقر في الخلفية.";
+            statusText.innerText = "❌ تعذر الاتصال! تأكد من أن السيرفر والنفق قيد التشغيل في الـ CMD.";
             console.error("Error:", error);
         }
     }
