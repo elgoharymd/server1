@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سيرفر رفع الملفات الشخصي</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .upload-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 400px; }
+        input[type="file"] { display: none; }
+        .custom-label { background: #007bff; color: white; padding: 10px 20px; border-radius: 6px; cursor: pointer; display: inline-block; margin-bottom: 15px; }
+        button { background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; width: 100%; font-size: 16px; }
+        .result { margin-top: 20px; word-break: break-all; padding: 10px; background: #e9ecef; border-radius: 6px; display: none; }
+        a { color: #007bff; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="upload-card">
+    <h2>سيرفر رفع الملفات السحابي ☁️</h2>
+    <p>اختر ملفاً لرفعه مباشرة إلى اللابتوب الخاص بك</p>
+    
+    <label for="file-input" class="custom-label">إختر الملف من جهازك</label>
+    <input type="file" id="file-input" onchange="updateFileName()">
+    <div id="file-name" style="margin-bottom: 15px; color: #555;"></div>
+    
+    <button onclick="uploadFile()">ابدأ الرفع للابتوب</button>
+    
+    <div id="result-box" class="result">
+        <p id="status-text"></p>
+        <a id="download-link" href="#" target="_blank">رابط مشاركة الملف الدائم</a>
+    </div>
+</div>
+
+<script>
+    // ضع هنا نفس الرابط الدائم الخاص بأداة النفق (مثل Localtonet) المتصل بلابتوبك
+    const SERVER_URL = "http://127.0.0.1:5000"; 
+
+    function updateFileName() {
+        const input = document.getElementById('file-input');
+        document.getElementById('file-name').innerText = input.files[0] ? input.files[0].name : "";
+    }
+
+    async function uploadFile() {
+        const input = document.getElementById('file-input');
+        if (!input.files[0]) { alert("من فضلك اختر ملفاً أولاً!"); return; }
+        
+        const formData = new FormData();
+        formData.append('file', input.files[0]);
+        
+        const resultBox = document.getElementById('result-box');
+        const statusText = document.getElementById('status-text');
+        
+        statusText.innerText = "جاري الرفع الآن...";
+        resultBox.style.display = "block";
+        
+        try {
+            const response = await fetch(`${SERVER_URL}/upload`, {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            
+            if (response.ok) {
+                statusText.innerText = result.message;
+                const link = document.getElementById('download-link');
+                link.href = result.url;
+                link.innerText = result.url;
+                link.style.display = "block";
+            } else {
+                statusText.innerText = "فشل الرفع: " + result.error;
+            }
+        } catch (error) {
+            statusText.innerText = "خطأ في الاتصال بالسيرفر المحلي!";
+            console.error(error);
+        }
+    }
+</script>
+</body>
+</html>
