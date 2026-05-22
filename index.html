@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سيرفر رفع الملفات الشخصي</title>
+    <title>سيرفر رفع الملفات المحلي</title>
     <style>
-        /* تنسيقات واجهة المستخدم - مريحة وعصرية ومتجاوبة مع الموبايل */
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             background: #f0f2f5; 
@@ -80,15 +79,15 @@
 <body>
 
 <div class="upload-card">
-    <h2>سيرفر الرفع السحابي الشخصي ☁️</h2>
-    <p>اختر أي ملف لرفعه مباشرة إلى الهارد ديسك الخاص بلابتوبك من أي مكان</p>
+    <h2>سيرفر الرفع المحلي 📁</h2>
+    <p>ارفع أي ملف من جهازك ليتم حفظه فوراً في مجلد سطح المكتب</p>
     
-    <label for="file-input" class="custom-label">إختر الملف من جهازك</label>
+    <label for="file-input" class="custom-label">إختر ملفاً من جهازك</label>
     <input type="file" id="file-input" onchange="updateFileName()">
     
     <div id="file-name" style="margin-bottom: 15px; color: #555; font-weight: 500;"></div>
     
-    <button onclick="uploadFile()">ابدأ الرفع للابتوب الآن</button>
+    <button onclick="uploadFile()">ابدأ الرفع السريع</button>
     
     <div id="result-box" class="result">
         <p id="status-text" style="margin: 0; font-weight: bold; color: #333;"></p>
@@ -97,16 +96,14 @@
 </div>
 
 <script>
-    // الرابط الحي الحالي المتصل بالسيرفر المحلي عبر نفق serveo
-    const SERVER_URL = "https://eae879bd160491d9-41-44-155-137.serveousercontent.com"; 
+    // الاتصال مباشرة بالسيرفر المحلي المخزن في ذاكرة الجهاز
+    const SERVER_URL = "http://127.0.0.1:5000"; 
 
-    // تحديث اسم الملف المختار على الشاشة فور اختياره
     function updateFileName() {
         const input = document.getElementById('file-input');
         document.getElementById('file-name').innerText = input.files[0] ? "الملف المختار: " + input.files[0].name : "";
     }
 
-    // دالة إرسال الملف إلى سيرفر بايثون على اللابتوب
     async function uploadFile() {
         const input = document.getElementById('file-input');
         if (!input.files[0]) { 
@@ -121,7 +118,7 @@
         const statusText = document.getElementById('status-text');
         const link = document.getElementById('download-link');
         
-        statusText.innerText = "جاري رفع ملفك إلى اللابتوب عبر الإنترنت... ⏳";
+        statusText.innerText = "جاري نقل الملف إلى سطح المكتب... ⏳";
         link.style.display = "none";
         resultBox.style.display = "block";
         
@@ -135,14 +132,14 @@
             if (response.ok) {
                 statusText.innerText = "🎉 " + result.message;
                 link.href = result.url;
-                link.innerText = "رابط تحميل الملف الدائم: " + result.url;
+                link.innerText = "رابط فتح الملف محلياً: " + result.url;
                 link.style.display = "block";
             } else {
                 statusText.innerText = "❌ فشل الرفع: " + (result.error || "خطأ مجهول");
             }
         } catch (error) {
-            statusText.innerText = "❌ تعذر الاتصال باللابتوب! تأكد من تشغيل سيرفر بايثون ونفق SSH.";
-            console.error("Error connected to server:", error);
+            statusText.innerText = "❌ تعذر الاتصال بالسيرفر! تأكد من تشغيل ملف server.py في الـ CMD.";
+            console.error("Error:", error);
         }
     }
 </script>
